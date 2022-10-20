@@ -7,7 +7,7 @@ st.set_page_config(page_title='Dados Liderança')
 st.header('Dados Liderança - Resultados dos Testes')
 # st.subheader('Resultados dos Testes')
 
-df = pd.read_csv('resultados_testes_simplificado.csv', sep=';')
+df = pd.read_csv('resultados_testes_simplificado_lider.csv', sep=';', encoding='latin-1')
 
 df['cla_atual'] = pd.to_numeric(df.cla_atual, errors='coerce')
 
@@ -69,6 +69,22 @@ def plot_egograma(figure, x, y, name):
             y=y,
             mode='lines+markers',
             name=name
+        ))
+    except:
+        pass
+
+
+def plot_bar(figure, x, y, name, color):
+    try:
+        figure.add_trace(go.Bar(
+            x=x,
+            y=y,
+            name=name,
+            orientation='h',
+            marker=dict(
+                color=color,
+                # line=dict(color='rgba(246, 78, 139, 1.0)', width=3)
+            )
         ))
     except:
         pass
@@ -167,3 +183,49 @@ fig3.update_xaxes(title_text='Zonas de Performance', tickangle=-45, side='top')
 fig3.update_yaxes(title_text='Área de Desempenho')
 
 st.plotly_chart(fig3)
+
+# Mapeamento Liderança
+st.markdown("### Mapeamento Liderança")
+fig4 = go.Figure()
+
+select_cols = ['LIDERANÇA', 'EQUIPE', 'RELAÇÃO HIERÁRQUICA', 'RESILIÊNCIA - R', 'FOCO EM RESULTADO', 'PROATIVIDADE',
+               'AÇÃO SOB PRESSÃO', 'NEGOCIAÇÃO', 'RESOLUÇÃO DE CONFLITO', 'INOVAÇÃO']
+df_title = 'MACRO INDICADORES - DIREÇÃO POSITIVA'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_bar(fig4, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'lightgreen')
+
+fig4.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig4)
+
+
+fig5 = go.Figure()
+
+select_cols = ['AUTONOMIA', 'ASSERTIVIDADE', 'FLEXIBILIDADE', 'COMUNICABILIDADE', 'EMPENHO', 'DISCIPLINA', 'SEGURANÇA',
+               'AUTENTICIDADE', 'TRANQUILIDADE - T', 'CUIDADO']
+df_title = 'MICRO INDICADORES - DIREÇÃO POSITIVA'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_bar(fig5, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'lightgreen')
+
+fig5.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig5)
+
+
+fig6 = go.Figure()
+
+select_cols = ['PROTELAÇÃO', 'IMEDIATISMO', 'IMPULSIVIDADE - P', 'AGRESSIVIDADE', 'PASSIVIDADE', 'TORMENTO', 'DESÂNIMO']
+df_title = 'MICRO INDICADORES - DIREÇÃO NEGATIVA'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_bar(fig6, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'purple')
+
+fig6.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig6)
+

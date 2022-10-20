@@ -11,9 +11,9 @@ df = pd.read_csv('resultados_testes_simplificado_lider.csv', sep=';', encoding='
 
 df['cla_atual'] = pd.to_numeric(df.cla_atual, errors='coerce')
 
-categorias = ['Clã', 'Hierarquia', 'Inovativa', 'Mercado']
-categorias_atual = ['cla_atual', 'hierarquia_atual', 'inovativa_atual', 'mercado_atual']
-categorias_ideal = ['cla_ideal', 'hierarquia_ideal', 'inovativa_ideal', 'mercado_ideal']
+categorias = ['Inovativa', 'Mercado', 'Hierarquia', 'Clã']
+categorias_atual = ['inovativa_atual', 'mercado_atual', 'hierarquia_atual', 'cla_atual']
+categorias_ideal = ['inovativa_ideal', 'mercado_ideal', 'hierarquia_ideal', 'cla_ideal']
 
 egograma_vars = ['PC', 'PP', 'A', 'CL', 'CA']
 
@@ -133,11 +133,20 @@ fig1.update_layout(
     polar=dict(
         radialaxis=dict(
             visible=True,
-            range=[0, 50]
-        )),
-    showlegend=True
+            range=[0, 30]
+        ),
+        angularaxis=dict(
+                tickfont_size=18,
+                rotation=45,
+                direction="clockwise"
+              )
+    ),
+    showlegend=True,
 )
-
+fig1.update_layout(polar={"radialaxis":{
+    "tickmode":"array",
+    "tickvals":[i for i in range(0, 31, 10)],
+    "ticktext":[i for i in range(0, 31, 10)]}})
 st.plotly_chart(fig1)
 
 # Egograma

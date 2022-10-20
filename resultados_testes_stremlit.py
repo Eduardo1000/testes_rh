@@ -11,13 +11,13 @@ df = pd.read_csv('resultados_testes_simplificado.csv', sep=';')
 
 df['cla_atual'] = pd.to_numeric(df.cla_atual, errors='coerce')
 
-colaboradores = df['colaborador'].dropna().to_list()
-
 categorias = ['Clã', 'Hierarquia', 'Inovativa', 'Mercado']
 categorias_atual = ['cla_atual', 'hierarquia_atual', 'inovativa_atual', 'mercado_atual']
 categorias_ideal = ['cla_ideal', 'hierarquia_ideal', 'inovativa_ideal', 'mercado_ideal']
 
 egograma_vars = ['PC', 'PP', 'A', 'CL', 'CA']
+
+mapeamento_vars = [f"Escala{number:02d}" for number in range(1, 21)]
 
 mapeamento_escalas = [
     'Pressões da Vida que vivencia com dificuldade',
@@ -43,8 +43,11 @@ mapeamento_escalas = [
 ]
 mapeamento_desempenho = {1: 'Atenção', 2: 'Vulnerável', 3: 'Proficiente', 4: 'Ótimo'}
 
-colaborador = st.selectbox('Colaborador:',
-                           colaboradores)
+# Remove quem não fez nenhum dos 3 testes
+df = df.dropna(how='all', subset=egograma_vars+categorias_atual+categorias_ideal+mapeamento_vars)
+
+# Define o colaborador
+colaborador = st.selectbox('Colaborador:', df['colaborador'].dropna().to_list())
 
 
 def plot_cameron_quinn(fig1, r, theta, name):
@@ -149,7 +152,6 @@ st.plotly_chart(fig2)
 st.markdown("### Mapeamento")
 fig3 = go.Figure()
 
-mapeamento_vars = [f"Escala{number:02d}" for number in range(1, 21)]
 df_mapeamento = df[(df['colaborador'] == colaborador)][mapeamento_vars].T
 df_mapeamento.columns = ['valor']
 df_mapeamento.index = mapeamento_escalas

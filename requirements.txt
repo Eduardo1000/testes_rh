@@ -4,4 +4,4 @@ plotly
 ipywidgets
 ipykernel
 notebook
-streamlit==0.62.0
+streamlit==1.4.0

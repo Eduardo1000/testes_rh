@@ -133,7 +133,7 @@ fig1.update_layout(
     polar=dict(
         radialaxis=dict(
             visible=True,
-            range=[0, 30]
+            range=[0, 50]
         ),
         angularaxis=dict(
                 tickfont_size=18,
@@ -145,8 +145,8 @@ fig1.update_layout(
 )
 fig1.update_layout(polar={"radialaxis":{
     "tickmode":"array",
-    "tickvals":[i for i in range(0, 31, 10)],
-    "ticktext":[i for i in range(0, 31, 10)]}})
+    "tickvals":[i for i in range(0, 51, 10)],
+    "ticktext":[i for i in range(0, 51, 10)]}})
 st.plotly_chart(fig1)
 
 # Egograma

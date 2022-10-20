@@ -7,7 +7,7 @@ st.set_page_config(page_title='Dados Liderança')
 st.header('Dados Liderança - Resultados dos Testes')
 # st.subheader('Resultados dos Testes')
 
-df = pd.read_csv('resultados_testes_simplificado.csv')
+df = pd.read_csv('resultados_testes_simplificado.csv', sep=';')
 
 df['cla_atual'] = pd.to_numeric(df.cla_atual, errors='coerce')
 

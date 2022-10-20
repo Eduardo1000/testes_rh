@@ -420,3 +420,27 @@ fig6.update_layout(
 )
 st.plotly_chart(fig6)
 
+
+# IBACO
+df = pd.read_csv('resultados_testes_ibaco.csv', sep=',')
+
+ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
+
+colaborador_ibaco = df[(df['colaborador'] == colaborador)][ibaco].values.flatten()
+
+df_contrato_ibaco = df.groupby('contrato')[ibaco].mean()
+contrato_ibaco = df_contrato_ibaco.loc[contrato_selecao].values.flatten()
+
+df_area_ibaco = df.groupby('area')[ibaco].mean()
+area_ibaco = df_area_ibaco.loc[area_selecao].values.flatten()
+
+fig7 = go.Figure(data=[
+    go.Bar(name='Colaborador', x=ibaco, y=colaborador_ibaco),
+    go.Bar(name=f'{contrato_selecao}', x=ibaco, y=contrato_ibaco),
+    go.Bar(name=f'{area_selecao}', x=ibaco, y=area_ibaco)
+])
+
+fig7.update_layout(barmode='stack')
+
+st.plotly_chart(fig7)
+

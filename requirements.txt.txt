@@ -1,6 +1,0 @@
-pandas
-matplotlib
-ipywidgets
-ipykernel
-notebook
-streamlit==0.62.0

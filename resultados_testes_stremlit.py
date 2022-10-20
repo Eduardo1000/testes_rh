@@ -19,6 +19,30 @@ categorias_ideal = ['cla_ideal', 'hierarquia_ideal', 'inovativa_ideal', 'mercado
 
 egograma_vars = ['PC', 'PP', 'A', 'CL', 'CA']
 
+mapeamento_escalas = [
+    'Pressões da Vida que vivencia com dificuldade',
+    'Satisfações da Vida vivenciadas com prazer',
+    'Consciência Emocional',
+    'Expressão Emocional',
+    'Consciência Emocional dos Outros(rapport)',
+    'Intencionalidade(Foco)',
+    'Criatividade',
+    'Elasticidade(Flexibilidade)',
+    'Conexões Interpessoais autênticas',
+    'Insatisfação Construtiva(Consenso)',
+    'Perspectiva otimista(Euforia)',
+    'Compaixão Empática',
+    'Intuição Acatada',
+    'Raio de Confiança(Lógica)',
+    'Poder Pessoal(Carisma)',
+    'Integridade',
+    'Saúde Geral',
+    'Qualidade de Vida',
+    'Quociente de Relacionamento',
+    'Desempenho Ótimo'
+]
+mapeamento_desempenho = {1: 'Atenção', 2: 'Vulnerável', 3: 'Proficiente', 4: 'Ótimo'}
+
 colaborador = st.selectbox('Colaborador:',
                            colaboradores)
 
@@ -35,9 +59,9 @@ def plot_cameron_quinn(fig1, r, theta, name):
         pass
 
 
-def plot_egograma(fig2, x, y, name):
+def plot_egograma(figure, x, y, name):
     try:
-        fig2.add_trace(go.Scatter(
+        figure.add_trace(go.Scatter(
             x=x,
             y=y,
             mode='lines+markers',
@@ -46,8 +70,9 @@ def plot_egograma(fig2, x, y, name):
     except:
         pass
 
-    # Cameron e Quinn
 
+# Cameron e Quinn
+st.markdown("### Cameron e Quinn")
 
 geral_ideal = df[categorias_ideal].mean().values.flatten()
 geral_atual = df[categorias_atual].mean().values.flatten()
@@ -94,10 +119,10 @@ fig1.update_layout(
     showlegend=True
 )
 
-# fig1.show()
 st.plotly_chart(fig1)
 
 # Egograma
+st.markdown("### Egograma")
 fig2 = go.Figure()
 
 df_colaborador_egograma = df[(df['colaborador'] == colaborador)][egograma_vars].T
@@ -118,5 +143,25 @@ fig2.update_traces(marker=dict(line=dict(width=1,
                                          color='DarkSlateGrey')),
                    selector=dict(mode='markers'))
 
-# fig2.show()
 st.plotly_chart(fig2)
+
+# Mapeamento
+st.markdown("### Mapeamento")
+fig3 = go.Figure()
+
+mapeamento_vars = [f"Escala{number:02d}" for number in range(1, 21)]
+df_mapeamento = df[(df['colaborador'] == colaborador)][mapeamento_vars].T
+df_mapeamento.columns = ['valor']
+df_mapeamento.index = mapeamento_escalas
+df_mapeamento = df_mapeamento.replace(mapeamento_desempenho)
+
+plot_egograma(fig3, df_mapeamento.index, df_mapeamento['valor'], 'Colaborador')
+
+fig3.update_traces(marker=dict(line=dict(width=1,
+                                         color='DarkSlateGrey')),
+                   selector=dict(mode='markers'),
+                   )
+fig3.update_xaxes(title_text='Zonas de Performance', tickangle=-45, side='top')
+fig3.update_yaxes(title_text='Área de Desempenho')
+
+st.plotly_chart(fig3)

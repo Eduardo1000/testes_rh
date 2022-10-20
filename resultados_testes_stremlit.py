@@ -184,8 +184,170 @@ fig3.update_yaxes(title_text='Área de Desempenho')
 
 st.plotly_chart(fig3)
 
-# Mapeamento Liderança
-st.markdown("### Mapeamento Liderança")
+# Mapeamento Liderança Dimensões
+st.markdown("### Mapeamento Liderança Dimensões")
+
+legend = [
+    ['color',	'ABREVIAÇÃO',	'SIGNIFICADO'],
+    ['blue',	'DST',	'Destaque'],
+    ['green',	'SAT',	'Satisfatório'],
+    ['gray',	'ADQ',	'Adequado'],
+    ['yellow',	'DES',	'Desenvolver'],
+    ['orange',	'MAA',	'Merece Atenção Alto'],
+    ['orange',	'MAB',	'Merece Atenção Baixo'],
+    ['red',	'CRA',	'Crítico Alto'],
+    ['red',	'CRB',	'Crítico Baixo']
+]
+
+# Mapeamento Liderança Dimensões - Positivas
+st.write("Escalas Positivas")
+
+fig = go.Figure()
+
+select_cols = ['BUSCA INFORMAÇÃO', 'COMPETIÇÃO', 'DECISÃO',	'COMANDO', 'EXIGÊNCIA']
+df_title = 'EMPREENDER'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+fig = go.Figure()
+
+select_cols = ['PERSISTÊNCIA',	'ATENÇÃO',	'RESISTE DISTRAÇÃO']
+df_title = 'FOCO'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+fig = go.Figure()
+
+select_cols = ['PLANEJAMENTO',	'ORGANIZAÇÃO',	'ROTINA']
+df_title = 'ORDEM'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+fig = go.Figure()
+
+select_cols = ['ADAPTABILIDADE',	'AGILIDADE',	'DILIGÊNCIA']
+df_title = 'DINAMISMO'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+fig = go.Figure()
+
+select_cols = ['BIOFILIA',	'HUMOR',	'AUTOCONFIANÇA',	'AUS DEPRESSÃO',	'AUS ANSIEDADE']
+df_title = 'VITA EMOCIONAL'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+fig = go.Figure()
+
+select_cols = ['VINCULO FAMILIAR',	'SOCIOFILIA',	'SOLIDAR COMUN','SOLIDAR FRAGILI']
+df_title = 'VÍNCULO'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+fig = go.Figure()
+
+select_cols = ['AMABILIDADE',	'COOPERAÇÃO',	'FRANQUEZA',	'HAB COMUNICAÇÃO']
+df_title = 'CIVILIDADE'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+# Mapeamento Liderança Dimensões - Negativas
+st.write("Escalas Negativas")
+
+
+fig = go.Figure()
+
+select_cols = ['OBEDIÊNCIA',	'DEPENDE APROVAÇÃO',	'COAÇÃO']
+df_title = 'INTERAÇÃO COM AUTORIDADE'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+fig = go.Figure()
+
+select_cols = ['DESCONFIANÇA',	'IRRITABILIDADE',	'HOSTILIDADE',	'RIVALIDADE']
+df_title = 'AFASTAMENTO'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+fig = go.Figure()
+
+select_cols = ['CUMPLICIDADE',	'DISSIMULAÇÃO',	'MANIPULAÇÃO',	'ESPERTEZA']
+df_title = 'COMPOSIÇÃO DE IMAGEM'
+df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+df_map_lider.columns = ['valor']
+plot_egograma(fig, df_map_lider.index, df_map_lider['valor'], 'Colaborador')
+
+fig.update_layout(
+    title=df_title
+)
+st.plotly_chart(fig)
+
+
+# Mapeamento Liderança Indicadores
+st.markdown("### Mapeamento Liderança Indicadores")
 fig4 = go.Figure()
 
 select_cols = ['LIDERANÇA', 'EQUIPE', 'RELAÇÃO HIERÁRQUICA', 'RESILIÊNCIA - R', 'FOCO EM RESULTADO', 'PROATIVIDADE',

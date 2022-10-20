@@ -1,6 +1,6 @@
 import pandas as pd
+import numpy as np
 import streamlit as st
-import plotly.express as px
 import plotly.graph_objects as go
 
 st.set_page_config(page_title='Dados Liderança')
@@ -163,6 +163,26 @@ fig2.update_traces(marker=dict(line=dict(width=1,
                    selector=dict(mode='markers'))
 
 st.plotly_chart(fig2)
+
+# Johari
+st.markdown("### Johari")
+select_cols = ['johari_A', 'johari_C', 'johari_O', 'johari_D']
+
+df_johari = df[(df['colaborador'] == colaborador)][select_cols].values[0]
+fig = go.Figure(data=[go.Table(
+  cells=dict(
+    values=[['<br><br>A (Aberta ou Arena)', '<br><br>O (Oculta ou Fechada)'],
+            ['<br><br>C (Cega)', '<br><br>D (Desconhecida)']],
+    line_color=['black'],
+    fill_color=np.where(np.resize(df_johari, (2, 2)), 'rgb(242, 140, 40)', 'rgb(249, 249, 249)'),
+    align='center', font=dict(color='black', size=12),
+    font_size=24,
+    height=100
+  ))
+])
+fig.layout['template']['data']['table'][0]['header']['fill']['color'] = 'rgba(0,0,0,0)'
+st.plotly_chart(fig)
+
 
 # Mapeamento
 st.markdown("### Mapeamento")

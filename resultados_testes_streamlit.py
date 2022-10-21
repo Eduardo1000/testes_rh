@@ -234,8 +234,11 @@ def main():
                 height=100
             ))
         ])
+        fig.update_layout(
+            margin=dict(l=20, r=20, t=20, b=20),
+        )
         fig.layout['template']['data']['table'][0]['header']['fill']['color'] = 'rgba(0,0,0,0)'
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True)
 
     with col2:
         st.markdown("### IBACO")

@@ -28,6 +28,17 @@ def plot_egograma(figure, x, y, name):
         pass
 
 
+def plot_ibaco(figure, x, y, text, name):
+    try:
+        figure.add_trace(go.Bar(
+            x=x,
+            y=y,
+            name=name
+        ))
+    except:
+        pass
+
+
 def plot_bar(figure, x, y, name, color):
     try:
         figure.add_trace(go.Bar(
@@ -241,27 +252,26 @@ def main():
 
         # IBACO
         st.markdown("### IBACO")
-        df_ibaco = pd.read_csv('resultados_testes_ibaco.csv', sep=',')
 
-        ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
-
-        colaborador_ibaco = df_ibaco[(df_ibaco['colaborador'] == colaborador)][ibaco].values.flatten()
-
-        df_contrato_ibaco = df_ibaco.groupby('contrato')[ibaco].mean()
+        df_ibaco = pd.read_csv('resultados_testes_ibaco.csv')
+        dimensoes_ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
+        geral_ibaco = df_ibaco[dimensoes_ibaco].mean().values.flatten()
+        colaborador_ibaco = df_ibaco[(df_ibaco['colaborador'] == colaborador)][dimensoes_ibaco].values.flatten()
+        df_contrato_ibaco = df_ibaco.groupby('contrato')[dimensoes_ibaco].mean()
         contrato_ibaco = df_contrato_ibaco.loc[contrato_selecao].values.flatten()
-
-        df_area_ibaco = df_ibaco.groupby('area')[ibaco].mean()
+        df_area_ibaco = df_ibaco.groupby('area')[dimensoes_ibaco].mean()
         area_ibaco = df_area_ibaco.loc[area_selecao].values.flatten()
 
-        fig7 = go.Figure(data=[
-            go.Bar(name='Colaborador', x=ibaco, y=colaborador_ibaco),
-            go.Bar(name=f'{contrato_selecao}', x=ibaco, y=contrato_ibaco),
-            go.Bar(name=f'{area_selecao}', x=ibaco, y=area_ibaco)
-        ])
+        fig_ibaco = go.Figure()
 
-        fig7.update_layout(barmode='stack')
+        plot_ibaco(fig_ibaco, dimensoes_ibaco, geral_ibaco, np.around(geral_ibaco, decimals=2), 'Spassu')
+        plot_ibaco(fig_ibaco, dimensoes_ibaco, colaborador_ibaco, colaborador_ibaco, 'Colaborador')
+        plot_ibaco(fig_ibaco, dimensoes_ibaco, contrato_ibaco, np.around(contrato_ibaco, decimals=2),
+                   f'Contrato ({contrato_selecao})')
+        plot_ibaco(fig_ibaco, dimensoes_ibaco, area_ibaco, np.around(area_ibaco, decimals=2), f'Área ({area_selecao})')
 
-        st.plotly_chart(fig7)
+        fig_ibaco.update_layout()
+        st.plotly_chart(fig_ibaco)
 
     # Mapeamento Liderança Dimensões
     st.markdown("### Mapeamento Liderança")

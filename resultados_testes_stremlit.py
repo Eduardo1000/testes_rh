@@ -50,13 +50,14 @@ df = df.dropna(how='all', subset=egograma_vars+categorias_atual+categorias_ideal
 colaborador = st.selectbox('Colaborador:', df['colaborador'].dropna().to_list())
 
 
-def plot_cameron_quinn(fig1, r, theta, name):
+def plot_cameron_quinn(fig1, r, theta, name, visible):
     try:
         fig1.add_trace(go.Scatterpolar(
             r=r,
             theta=theta,
             fill='tonext',
-            name=name
+            name=name,
+            visible=visible
         ))
     except:
         pass
@@ -79,7 +80,6 @@ def plot_ibaco(figure, x, y, text, name):
         figure.add_trace(go.Bar(
             x=x,
             y=y,
-            text=text,
             name=name
         ))
     except:
@@ -129,17 +129,17 @@ area_ideal = df_area_ideal.loc[area_selecao].values.flatten()
 
 fig1 = go.Figure()
 
-plot_cameron_quinn(fig1, geral_atual, categorias, 'Spassu - Atual')
-plot_cameron_quinn(fig1, geral_ideal, categorias, 'Spassu - Ideal')
+plot_cameron_quinn(fig1, geral_atual, categorias, 'Spassu - Atual', visible='legendonly')
+plot_cameron_quinn(fig1, geral_ideal, categorias, 'Spassu - Ideal', visible='legendonly')
 
-plot_cameron_quinn(fig1, colaborador_atual, categorias, 'Colaborador - Atual')
-plot_cameron_quinn(fig1, colaborador_ideal, categorias, 'Colaborador - Ideal')
+plot_cameron_quinn(fig1, colaborador_atual, categorias, 'Colaborador - Atual', visible=None)
+plot_cameron_quinn(fig1, colaborador_ideal, categorias, 'Colaborador - Ideal', visible=None)
 
-plot_cameron_quinn(fig1, contrato_atual, categorias, f'Contrato ({contrato_selecao}) - Atual')
-plot_cameron_quinn(fig1, contrato_ideal, categorias, f'Contrato ({contrato_selecao}) - Ideal')
+plot_cameron_quinn(fig1, contrato_atual, categorias, f'Contrato ({contrato_selecao}) - Atual', visible='legendonly')
+plot_cameron_quinn(fig1, contrato_ideal, categorias, f'Contrato ({contrato_selecao}) - Ideal', visible='legendonly')
 
-plot_cameron_quinn(fig1, area_atual, categorias, f'Área ({area_selecao}) - Atual')
-plot_cameron_quinn(fig1, area_ideal, categorias, f'Área ({area_selecao}) - Ideal')
+plot_cameron_quinn(fig1, area_atual, categorias, f'Área ({area_selecao}) - Atual', visible='legendonly')
+plot_cameron_quinn(fig1, area_ideal, categorias, f'Área ({area_selecao}) - Ideal', visible='legendonly')
 
 fig1.update_layout(
     polar=dict(

@@ -126,6 +126,12 @@ def main():
     # Define o colaborador
     colaborador = st.selectbox('Colaborador:', df['colaborador'].dropna().to_list())
 
+    # Define a area
+    area = st.selectbox('Área:', df['area'].dropna().unique())
+
+    # Define o contrato
+    contrato = st.selectbox('Contrato:', df['contrato'].dropna().unique())
+
     # Define colunas
     col1, col2 = st.columns(2)
 
@@ -155,6 +161,18 @@ def main():
         df_area_ideal = df.groupby('area')[categorias_ideal].mean()
         area_ideal = df_area_ideal.loc[area_selecao].values.flatten()
 
+        df_area_selecionada_atual = df.groupby('area')[categorias_atual].mean()
+        area_consulta_atual = df_area_selecionada_atual.loc[area].values.flatten()
+
+        df_area_selecionada_ideal = df.groupby('area')[categorias_ideal].mean()
+        area_consulta_ideal = df_area_selecionada_ideal.loc[area].values.flatten()
+
+        df_contrato_selecionado_atual = df.groupby('contrato')[categorias_atual].mean()
+        contrato_consulta_atual = df_contrato_selecionado_atual.loc[contrato].values.flatten()
+
+        df_contrato_selecionado_ideal = df.groupby('contrato')[categorias_atual].mean()
+        contrato_consulta_ideal = df_contrato_selecionado_ideal.loc[contrato].values.flatten()
+
         fig1 = go.Figure()
 
         plot_cameron_quinn(fig1, geral_atual, categorias, 'Spassu - Atual', visible=None)
@@ -163,11 +181,19 @@ def main():
         plot_cameron_quinn(fig1, colaborador_atual, categorias, 'Colaborador - Atual', visible=None)
         plot_cameron_quinn(fig1, colaborador_ideal, categorias, 'Colaborador - Ideal', visible='legendonly')
 
-        plot_cameron_quinn(fig1, contrato_atual, categorias, f'Contrato ({contrato_selecao}) - Atual', visible=None)
-        plot_cameron_quinn(fig1, contrato_ideal, categorias, f'Contrato ({contrato_selecao}) - Ideal', visible='legendonly')
+        plot_cameron_quinn(fig1, area_atual, categorias, f'Área {area_selecao} - Atual', visible=None)
+        plot_cameron_quinn(fig1, area_ideal, categorias, f'Área {area_selecao} - Ideal', visible='legendonly')
 
-        plot_cameron_quinn(fig1, area_atual, categorias, f'Área ({area_selecao}) - Atual', visible=None)
-        plot_cameron_quinn(fig1, area_ideal, categorias, f'Área ({area_selecao}) - Ideal', visible='legendonly')
+        plot_cameron_quinn(fig1, contrato_atual, categorias, f'Contrato {contrato_selecao} - Atual', visible=None)
+        plot_cameron_quinn(fig1, contrato_ideal, categorias, f'Contrato {contrato_selecao} - Ideal', visible='legendonly')
+
+        if area != area_selecao:
+            plot_cameron_quinn(fig1, area_consulta_atual, categorias, f'Área {area} - Atual', visible=None)
+            plot_cameron_quinn(fig1, area_consulta_ideal, categorias, f'Área {area} - Ideal', visible='legendonly')
+
+        if contrato != contrato_selecao:
+            plot_cameron_quinn(fig1, contrato_consulta_atual, categorias, f'Contrato {contrato} - Atual', visible=None)
+            plot_cameron_quinn(fig1, contrato_consulta_ideal, categorias, f'Contrato {contrato} - Atual', visible='legendonly')
 
         fig1.update_layout(
             polar=dict(
@@ -212,10 +238,10 @@ def main():
         st.plotly_chart(fig)
 
     with col2:
-        # IBACO
         st.markdown("### IBACO")
 
         cols_ibaco = ['PC_ibaco', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
+
         geral_ibaco = df[cols_ibaco].mean().values.flatten()
         colaborador_ibaco = df[(df['colaborador'] == colaborador)][cols_ibaco].values.flatten()
         df_contrato_ibaco = df.groupby('contrato')[cols_ibaco].mean()
@@ -223,14 +249,30 @@ def main():
         df_area_ibaco = df.groupby('area')[cols_ibaco].mean()
         area_ibaco = df_area_ibaco.loc[area_selecao].values.flatten()
 
+        df_contrato_selecionado_ibaco = df.groupby('contrato')[cols_ibaco].mean()
+        contrato_selecionado_ibaco = df_contrato_selecionado_ibaco.loc[contrato].values.flatten()
+        df_area_selecionada_ibaco = df.groupby('area')[cols_ibaco].mean()
+        area_selecionada_ibaco = df_area_selecionada_ibaco.loc[area].values.flatten()
+
         fig_ibaco = go.Figure()
 
         dimensoes_ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
         plot_ibaco(fig_ibaco, dimensoes_ibaco, geral_ibaco, np.around(geral_ibaco, decimals=2), 'Spassu')
         plot_ibaco(fig_ibaco, dimensoes_ibaco, colaborador_ibaco, colaborador_ibaco, 'Colaborador')
+        plot_ibaco(fig_ibaco, dimensoes_ibaco, area_ibaco, np.around(area_ibaco, decimals=2), f'Área {area_selecao}')
         plot_ibaco(fig_ibaco, dimensoes_ibaco, contrato_ibaco, np.around(contrato_ibaco, decimals=2),
-                   f'Contrato ({contrato_selecao})')
-        plot_ibaco(fig_ibaco, dimensoes_ibaco, area_ibaco, np.around(area_ibaco, decimals=2), f'Área ({area_selecao})')
+                   f'Contrato {contrato_selecao}')
+
+        if area != area_selecao:
+            plot_ibaco(fig_ibaco, dimensoes_ibaco, area_selecionada_ibaco, np.around(area_selecionada_ibaco, decimals=2), f'Área {area}')
+
+        if contrato != contrato_selecao:
+            plot_ibaco(fig_ibaco, dimensoes_ibaco, contrato_selecionado_ibaco, np.around(contrato_selecionado_ibaco, decimals=2),
+                   f'Contrato {contrato}')
+
+        fig_ibaco.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+        )
         st.plotly_chart(fig_ibaco, use_container_width=True)
 
         # Egograma
@@ -240,16 +282,28 @@ def main():
         df_colaborador_egograma = df[(df['colaborador'] == colaborador)][egograma_vars].T
         df_colaborador_egograma.columns = ['valor']
 
-        df_contrato_egograma = df.groupby('contrato')[egograma_vars].mean()
-        contrato_egograma = df_contrato_egograma.loc[contrato_selecao].values.flatten()
-
         df_area_egograma = df.groupby('area')[egograma_vars].mean()
         area_egograma = df_area_egograma.loc[area_selecao].values.flatten()
 
+        df_contrato_egograma = df.groupby('contrato')[egograma_vars].mean()
+        contrato_egograma = df_contrato_egograma.loc[contrato_selecao].values.flatten()
+
+        df_contrato_selecionado_egograma = df.groupby('contrato')[egograma_vars].mean()
+        contrato_selecionado_egograma = df_contrato_selecionado_egograma.loc[contrato].values.flatten()
+
+        df_area_selecionada_egograma = df.groupby('area')[egograma_vars].mean()
+        area_selecionada_egograma = df_area_selecionada_egograma.loc[area].values.flatten()
+
         plot_egograma(fig2, df_colaborador_egograma.index, df[egograma_vars].mean(), 'Spassu')
         plot_egograma(fig2, df_colaborador_egograma.index, df_colaborador_egograma['valor'], 'Colaborador')
-        plot_egograma(fig2, df_colaborador_egograma.index, contrato_egograma, f'Contrato ({contrato_selecao})')
-        plot_egograma(fig2, df_colaborador_egograma.index, area_egograma, f'Área ({area_selecao})')
+        plot_egograma(fig2, df_colaborador_egograma.index, area_egograma, f'Área {area_selecao}')
+        plot_egograma(fig2, df_colaborador_egograma.index, contrato_egograma, f'Contrato {contrato_selecao}')
+
+        if area != area_selecao:
+            plot_egograma(fig2, df_colaborador_egograma.index, area_selecionada_egograma, f'Área {area}')
+
+        if contrato != contrato_selecao:
+            plot_egograma(fig2, df_colaborador_egograma.index, contrato_selecionado_egograma, f'Contrato {contrato}')
 
         fig2.update_traces(
             marker=dict(

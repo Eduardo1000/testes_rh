@@ -114,7 +114,7 @@ def main():
     st.header('Dados Liderança - Resultados dos Testes')
 
     # Abre a Planilha de dados
-    df = pd.read_csv('resultados_testes_simplificado_lider.csv', sep=';', encoding='latin-1')
+    df = pd.read_csv('resultados_testes_simplificado_lider.csv', sep=';')
     df['cla_atual'] = pd.to_numeric(df.cla_atual, errors='coerce')
 
     # Remove aqueles não fizeram nenhum dos 3 testes
@@ -356,7 +356,8 @@ def main():
             # range=[0, len(color_legend)],
             categoryarray=color_legend.index[::-1].values,
         ),
-        width=1800
+        width=1800,
+        height=600
     )
     # fig.update_xaxes(tickangle=15)
     st.plotly_chart(fig)

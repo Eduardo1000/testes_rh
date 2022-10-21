@@ -46,6 +46,8 @@ def plot_bar(figure, x, y, name, color):
             y=y,
             name=name,
             orientation='h',
+            showlegend=False,
+            text=x.values,
             marker=dict(
                 color=color,
                 # line=dict(color='rgba(246, 78, 139, 1.0)', width=3)
@@ -179,6 +181,7 @@ def main():
                       )
             ),
             showlegend=True,
+            margin=dict(l=0, r=0, t=0, b=0)
         )
         fig1.update_layout(polar={"radialaxis":{
             "tickmode":"array",
@@ -202,6 +205,10 @@ def main():
                 height=100
             ))
         ])
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            height=250
+        )
         fig.layout['template']['data']['table'][0]['header']['fill']['color'] = 'rgba(0,0,0,0)'
         st.plotly_chart(fig)
 
@@ -222,7 +229,9 @@ def main():
                            )
         fig3.update_xaxes(title_text='Zonas de Performance', tickangle=-45, side='top')
         fig3.update_yaxes(title_text='Área de Desempenho')
-
+        fig3.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+        )
         st.plotly_chart(fig3)
 
     with col2:
@@ -247,7 +256,9 @@ def main():
         fig2.update_traces(marker=dict(line=dict(width=1,
                                                  color='DarkSlateGrey')),
                            selector=dict(mode='markers'))
-
+        fig2.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+        )
         st.plotly_chart(fig2)
 
         # IBACO
@@ -270,7 +281,9 @@ def main():
                    f'Contrato ({contrato_selecao})')
         plot_ibaco(fig_ibaco, dimensoes_ibaco, area_ibaco, np.around(area_ibaco, decimals=2), f'Área ({area_selecao})')
 
-        fig_ibaco.update_layout()
+        fig_ibaco.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+        )
         st.plotly_chart(fig_ibaco)
 
     # Mapeamento Liderança Dimensões
@@ -293,14 +306,18 @@ def main():
         plot_bar(fig4, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'lightgreen')
 
         fig4.update_layout(
-            title=df_title
+            title=df_title,
+            width=550,
+            margin=dict(l=0, r=0, t=0, b=0),
+
         )
         st.plotly_chart(fig4)
 
     with col_2:
         fig5 = go.Figure()
 
-        select_cols = ['AUTONOMIA', 'ASSERTIVIDADE', 'FLEXIBILIDADE', 'COMUNICABILIDADE', 'EMPENHO', 'DISCIPLINA', 'SEGURANÇA',
+        select_cols = ['AUTONOMIA', 'ASSERTIVIDADE', 'FLEXIBILIDADE', 'COMUNICABILIDADE', 'EMPENHO', 'DISCIPLINA',
+                       'SEGURANÇA',
                        'AUTENTICIDADE', 'TRANQUILIDADE - T', 'CUIDADO']
         df_title = 'MICRO INDICADORES - DIREÇÃO POSITIVA'
         df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
@@ -308,7 +325,9 @@ def main():
         plot_bar(fig5, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'lightgreen')
 
         fig5.update_layout(
-            title=df_title
+            title=df_title,
+            width=550,
+            margin=dict(l=0, r=0, t=0, b=0),
         )
         st.plotly_chart(fig5)
 
@@ -322,7 +341,9 @@ def main():
         plot_bar(fig6, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'purple')
 
         fig6.update_layout(
-            title=df_title
+            title=df_title,
+            width=500,
+            margin=dict(l=0, r=0, t=0, b=0),
         )
         st.plotly_chart(fig6)
 
@@ -356,10 +377,11 @@ def main():
             # range=[0, len(color_legend)],
             categoryarray=color_legend.index[::-1].values,
         ),
-        width=1800,
-        height=600
+        width=1700,
+        height=600,
+        margin=dict(l=0, r=0, t=0, b=0)
     )
-    # fig.update_xaxes(tickangle=15)
+    # fig.update_xaxes(tickangle=-45, side='top')
     st.plotly_chart(fig)
 
 

@@ -253,17 +253,17 @@ def main():
         # IBACO
         st.markdown("### IBACO")
 
-        df_ibaco = pd.read_csv('resultados_testes_ibaco.csv')
-        dimensoes_ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
-        geral_ibaco = df_ibaco[dimensoes_ibaco].mean().values.flatten()
-        colaborador_ibaco = df_ibaco[(df_ibaco['colaborador'] == colaborador)][dimensoes_ibaco].values.flatten()
-        df_contrato_ibaco = df_ibaco.groupby('contrato')[dimensoes_ibaco].mean()
+        cols_ibaco = ['PC_ibaco', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
+        geral_ibaco = df[cols_ibaco].mean().values.flatten()
+        colaborador_ibaco = df[(df['colaborador'] == colaborador)][cols_ibaco].values.flatten()
+        df_contrato_ibaco = df.groupby('contrato')[cols_ibaco].mean()
         contrato_ibaco = df_contrato_ibaco.loc[contrato_selecao].values.flatten()
-        df_area_ibaco = df_ibaco.groupby('area')[dimensoes_ibaco].mean()
+        df_area_ibaco = df.groupby('area')[cols_ibaco].mean()
         area_ibaco = df_area_ibaco.loc[area_selecao].values.flatten()
 
         fig_ibaco = go.Figure()
 
+        dimensoes_ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
         plot_ibaco(fig_ibaco, dimensoes_ibaco, geral_ibaco, np.around(geral_ibaco, decimals=2), 'Spassu')
         plot_ibaco(fig_ibaco, dimensoes_ibaco, colaborador_ibaco, colaborador_ibaco, 'Colaborador')
         plot_ibaco(fig_ibaco, dimensoes_ibaco, contrato_ibaco, np.around(contrato_ibaco, decimals=2),

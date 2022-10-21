@@ -189,29 +189,6 @@ def main():
             "ticktext":[i for i in range(0, 51, 10)]}})
         st.plotly_chart(fig1)
 
-        # Johari
-        st.markdown("### Johari")
-        select_cols = ['johari_A', 'johari_C', 'johari_O', 'johari_D']
-
-        df_johari = df[(df['colaborador'] == colaborador)][select_cols].values[0]
-        fig = go.Figure(data=[go.Table(
-            cells=dict(
-                values=[['<br><br>A (Aberta ou Arena)', '<br><br>O (Oculta ou Fechada)'],
-                        ['<br><br>C (Cega)', '<br><br>D (Desconhecida)']],
-                line_color=['black'],
-                fill_color=np.where(np.resize(df_johari, (2, 2)), 'rgb(242, 140, 40)', 'rgb(249, 249, 249)'),
-                align='center', font=dict(color='black', size=12),
-                font_size=24,
-                height=100
-            ))
-        ])
-        fig.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0),
-            height=250
-        )
-        fig.layout['template']['data']['table'][0]['header']['fill']['color'] = 'rgba(0,0,0,0)'
-        st.plotly_chart(fig)
-
         # Mapeamento
         st.markdown("### Mapeamento")
         fig3 = go.Figure()
@@ -227,10 +204,14 @@ def main():
                                                  color='DarkSlateGrey')),
                            selector=dict(mode='markers'),
                            )
-        fig3.update_xaxes(title_text='Zonas de Performance', tickangle=-45, side='top')
+        fig3.update_xaxes(title_text='Zonas de Performance', tickangle=-60, side='top')
         fig3.update_yaxes(title_text='Área de Desempenho')
         fig3.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
+            height=750,
+            xaxis_tickfont_size=16,
+            yaxis_tickfont_size=16,
+            yaxis_titlefont_size=16,
         )
         st.plotly_chart(fig3)
 
@@ -285,6 +266,29 @@ def main():
             margin=dict(l=0, r=0, t=0, b=0),
         )
         st.plotly_chart(fig_ibaco)
+
+        # Johari
+        st.markdown("### Johari")
+        select_cols = ['johari_A', 'johari_C', 'johari_O', 'johari_D']
+
+        df_johari = df[(df['colaborador'] == colaborador)][select_cols].values[0]
+        fig = go.Figure(data=[go.Table(
+            cells=dict(
+                values=[['<br><br>A (Aberta ou Arena)', '<br><br>O (Oculta ou Fechada)'],
+                        ['<br><br>C (Cega)', '<br><br>D (Desconhecida)']],
+                line_color=['black'],
+                fill_color=np.where(np.resize(df_johari, (2, 2)), 'rgb(242, 140, 40)', 'rgb(249, 249, 249)'),
+                align='center', font=dict(color='black', size=12),
+                font_size=24,
+                height=100
+            ))
+        ])
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            height=250
+        )
+        fig.layout['template']['data']['table'][0]['header']['fill']['color'] = 'rgba(0,0,0,0)'
+        st.plotly_chart(fig)
 
     # Mapeamento Liderança Dimensões
     st.markdown("### Mapeamento Liderança")

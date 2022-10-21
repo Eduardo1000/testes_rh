@@ -74,6 +74,18 @@ def plot_egograma(figure, x, y, name):
         pass
 
 
+def plot_ibaco(figure, x, y, text, name):
+    try:
+        figure.add_trace(go.Bar(
+            x=x,
+            y=y,
+            text=text,
+            name=name
+        ))
+    except:
+        pass
+
+
 def plot_bar(figure, x, y, name, color):
     try:
         figure.add_trace(go.Bar(
@@ -172,6 +184,28 @@ fig2.update_traces(marker=dict(line=dict(width=1,
                    selector=dict(mode='markers'))
 
 st.plotly_chart(fig2)
+
+# IBACO
+st.markdown("### IBACO")
+
+df_ibaco = pd.read_csv('resultados_testes_ibaco.csv')
+dimensoes_ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
+geral_ibaco = df_ibaco[dimensoes_ibaco].mean().values.flatten()
+colaborador_ibaco = df_ibaco[(df_ibaco['colaborador'] == colaborador)][dimensoes_ibaco].values.flatten()
+df_contrato_ibaco = df_ibaco.groupby('contrato')[dimensoes_ibaco].mean()
+contrato_ibaco = df_contrato_ibaco.loc[contrato_selecao].values.flatten()
+df_area_ibaco = df_ibaco.groupby('area')[dimensoes_ibaco].mean()
+area_ibaco = df_area_ibaco.loc[area_selecao].values.flatten()
+
+fig_ibaco = go.Figure()
+
+plot_ibaco(fig_ibaco, dimensoes_ibaco, geral_ibaco, np.around(geral_ibaco, decimals=2), 'Spassu')
+plot_ibaco(fig_ibaco, dimensoes_ibaco, colaborador_ibaco, colaborador_ibaco, 'Colaborador')
+plot_ibaco(fig_ibaco, dimensoes_ibaco, contrato_ibaco, np.around(contrato_ibaco, decimals=2), f'Contrato ({contrato_selecao})')
+plot_ibaco(fig_ibaco, dimensoes_ibaco, area_ibaco, np.around(area_ibaco, decimals=2), f'Área ({area_selecao})')
+
+fig_ibaco.update_layout()
+st.plotly_chart(fig_ibaco)
 
 # Johari
 st.markdown("### Johari")
@@ -419,28 +453,3 @@ fig6.update_layout(
     title=df_title
 )
 st.plotly_chart(fig6)
-
-
-# IBACO
-df = pd.read_csv('resultados_testes_ibaco.csv', sep=',')
-
-ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
-
-colaborador_ibaco = df[(df['colaborador'] == colaborador)][ibaco].values.flatten()
-
-df_contrato_ibaco = df.groupby('contrato')[ibaco].mean()
-contrato_ibaco = df_contrato_ibaco.loc[contrato_selecao].values.flatten()
-
-df_area_ibaco = df.groupby('area')[ibaco].mean()
-area_ibaco = df_area_ibaco.loc[area_selecao].values.flatten()
-
-fig7 = go.Figure(data=[
-    go.Bar(name='Colaborador', x=ibaco, y=colaborador_ibaco),
-    go.Bar(name=f'{contrato_selecao}', x=ibaco, y=contrato_ibaco),
-    go.Bar(name=f'{area_selecao}', x=ibaco, y=area_ibaco)
-])
-
-fig7.update_layout(barmode='stack')
-
-st.plotly_chart(fig7)
-

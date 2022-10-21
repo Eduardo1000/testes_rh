@@ -103,10 +103,10 @@ map_lid_dim = {
     "FOCO": ['PERSISTÊNCIA', 'ATENÇÃO', 'RESISTE DISTRAÇÃO'],
     "ORDEM": ['PLANEJAMENTO', 'ORGANIZAÇÃO', 'ROTINA'],
     "DINAMISMO": ['ADAPTABILIDADE', 'AGILIDADE', 'DILIGÊNCIA'],
-    "VITA EMOCIONAL": ['BIOFILIA', 'HUMOR', 'AUTOCONFIANÇA', 'AUS DEPRESSÃO', 'AUS ANSIEDADE'],
+    "VIDA EMOCIONAL": ['BIOFILIA', 'HUMOR', 'AUTOCONFIANÇA', 'AUS DEPRESSÃO', 'AUS ANSIEDADE'],
     "VÍNCULO": ['VINCULO FAMILIAR', 'SOCIOFILIA', 'SOLIDAR COMUN', 'SOLIDAR FRAGILI'],
     "CIVILIDADE": ['AMABILIDADE', 'COOPERAÇÃO', 'FRANQUEZA', 'HAB COMUNICAÇÃO'],
-    'INTERAÇÃO COM<br>AUTORIDADE': ['OBEDIÊNCIA', 'DEPENDE APROVAÇÃO', 'COAÇÃO'],
+    'INTERAÇÃO<br>COM<br>AUTORIDADE': ['OBEDIÊNCIA', 'DEPENDE APROVAÇÃO', 'COAÇÃO'],
     'AFASTAMENTO': ['DESCONFIANÇA', 'IRRITABILIDADE', 'HOSTILIDADE', 'RIVALIDADE'],
     'COMPOSIÇÃO<br>DE IMAGEM': ['CUMPLICIDADE', 'DISSIMULAÇÃO', 'MANIPULAÇÃO', 'ESPERTEZA']
 }
@@ -208,80 +208,36 @@ def main():
                       )
             ),
             showlegend=True,
-            margin=dict(l=0, r=0, t=0, b=0)
+            margin=dict(l=30, r=20, t=20, b=20),
+            legend=dict(
+                yanchor="top",
+                y=0.99,
+                xanchor="right",
+                x=0.01
+            )
         )
-        fig1.update_layout(polar={"radialaxis":{
-            "tickmode":"array",
-            "tickvals":[i for i in range(0, 51, 10)],
-            "ticktext":[i for i in range(0, 51, 10)]}})
-        st.plotly_chart(fig1)
+        st.plotly_chart(fig1, use_container_width=True)
 
-        # Mapeamento
-        st.markdown("### Mapeamento")
-        fig3 = go.Figure()
+        # Johari
+        st.markdown("### Johari")
+        select_cols = ['johari_A', 'johari_C', 'johari_O', 'johari_D']
 
-        df_mapeamento = df[(df['colaborador'] == colaborador)][mapeamento_vars].T
-        df_mapeamento.columns = ['valor']
-        df_mapeamento.index = mapeamento_escalas
-        df_mapeamento = df_mapeamento.replace(mapeamento_desempenho)
-
-        plot_egograma(fig3, df_mapeamento.index, df_mapeamento['valor'], 'Colaborador')
-
-        fig3.update_traces(marker=dict(line=dict(width=1,
-                                                 color='DarkSlateGrey')),
-                           selector=dict(mode='markers'),
-                           )
-        fig3.update_xaxes(title_text='Zonas de Performance', tickangle=-60, side='top')
-        fig3.update_yaxes(title_text='Área de Desempenho')
-        fig3.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0),
-            height=750,
-            xaxis_tickfont_size=16,
-            yaxis_tickfont_size=16,
-            yaxis_titlefont_size=16,
-        )
-        st.plotly_chart(fig3)
+        df_johari = df[(df['colaborador'] == colaborador)][select_cols].values[0]
+        fig = go.Figure(data=[go.Table(
+            cells=dict(
+                values=[['<br><br>A (Aberta ou Arena)', '<br><br>O (Oculta ou Fechada)'],
+                        ['<br><br>C (Cega)', '<br><br>D (Desconhecida)']],
+                line_color=['black'],
+                fill_color=np.where(np.resize(df_johari, (2, 2)), 'rgb(242, 140, 40)', 'rgb(249, 249, 249)'),
+                align='center', font=dict(color='black', size=12),
+                font_size=24,
+                height=100
+            ))
+        ])
+        fig.layout['template']['data']['table'][0]['header']['fill']['color'] = 'rgba(0,0,0,0)'
+        st.plotly_chart(fig)
 
     with col2:
-        # Egograma
-        st.markdown("### Egograma")
-        fig2 = go.Figure()
-
-        df_colaborador_egograma = df[(df['colaborador'] == colaborador)][egograma_vars].T
-        df_colaborador_egograma.columns = ['valor']
-
-        df_area_egograma = df.groupby('area')[egograma_vars].mean()
-        area_egograma = df_area_egograma.loc[area_selecao].values.flatten()
-
-        df_contrato_egograma = df.groupby('contrato')[egograma_vars].mean()
-        contrato_egograma = df_contrato_egograma.loc[contrato_selecao].values.flatten()
-
-        df_contrato_selecionado_egograma = df.groupby('contrato')[egograma_vars].mean()
-        contrato_selecionado_egograma = df_contrato_selecionado_egograma.loc[contrato].values.flatten()
-
-        df_area_selecionada_egograma = df.groupby('area')[egograma_vars].mean()
-        area_selecionada_egograma = df_area_selecionada_egograma.loc[area].values.flatten()
-
-        plot_egograma(fig2, df_colaborador_egograma.index, df[egograma_vars].mean(), 'Spassu')
-        plot_egograma(fig2, df_colaborador_egograma.index, df_colaborador_egograma['valor'], 'Colaborador')
-        plot_egograma(fig2, df_colaborador_egograma.index, area_egograma, f'Área {area_selecao}')
-        plot_egograma(fig2, df_colaborador_egograma.index, contrato_egograma, f'Contrato {contrato_selecao}')
-
-        if area != area_selecao:
-            plot_egograma(fig2, df_colaborador_egograma.index, area_selecionada_egograma, f'Área {area}')
-
-        if contrato != contrato_selecao:
-            plot_egograma(fig2, df_colaborador_egograma.index, contrato_selecionado_egograma, f'Contrato {contrato}')
-
-        fig2.update_traces(marker=dict(line=dict(width=1,
-                                                 color='DarkSlateGrey')),
-                           selector=dict(mode='markers'))
-        fig2.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0),
-        )
-        st.plotly_chart(fig2)
-
-        # IBACO
         st.markdown("### IBACO")
 
         cols_ibaco = ['PC_ibaco', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
@@ -317,30 +273,72 @@ def main():
         fig_ibaco.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
         )
-        st.plotly_chart(fig_ibaco)
+        st.plotly_chart(fig_ibaco, use_container_width=True)
 
-        # Johari
-        st.markdown("### Johari")
-        select_cols = ['johari_A', 'johari_C', 'johari_O', 'johari_D']
+        # Egograma
+        st.markdown("### Egograma")
+        fig2 = go.Figure()
 
-        df_johari = df[(df['colaborador'] == colaborador)][select_cols].values[0]
-        fig = go.Figure(data=[go.Table(
-            cells=dict(
-                values=[['<br><br>A (Aberta ou Arena)', '<br><br>O (Oculta ou Fechada)'],
-                        ['<br><br>C (Cega)', '<br><br>D (Desconhecida)']],
-                line_color=['black'],
-                fill_color=np.where(np.resize(df_johari, (2, 2)), 'rgb(242, 140, 40)', 'rgb(249, 249, 249)'),
-                align='center', font=dict(color='black', size=12),
-                font_size=24,
-                height=100
-            ))
-        ])
-        fig.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0),
-            height=250
+        df_colaborador_egograma = df[(df['colaborador'] == colaborador)][egograma_vars].T
+        df_colaborador_egograma.columns = ['valor']
+
+        df_area_egograma = df.groupby('area')[egograma_vars].mean()
+        area_egograma = df_area_egograma.loc[area_selecao].values.flatten()
+
+        df_contrato_egograma = df.groupby('contrato')[egograma_vars].mean()
+        contrato_egograma = df_contrato_egograma.loc[contrato_selecao].values.flatten()
+
+        df_contrato_selecionado_egograma = df.groupby('contrato')[egograma_vars].mean()
+        contrato_selecionado_egograma = df_contrato_selecionado_egograma.loc[contrato].values.flatten()
+
+        df_area_selecionada_egograma = df.groupby('area')[egograma_vars].mean()
+        area_selecionada_egograma = df_area_selecionada_egograma.loc[area].values.flatten()
+
+        plot_egograma(fig2, df_colaborador_egograma.index, df[egograma_vars].mean(), 'Spassu')
+        plot_egograma(fig2, df_colaborador_egograma.index, df_colaborador_egograma['valor'], 'Colaborador')
+        plot_egograma(fig2, df_colaborador_egograma.index, area_egograma, f'Área {area_selecao}')
+        plot_egograma(fig2, df_colaborador_egograma.index, contrato_egograma, f'Contrato {contrato_selecao}')
+
+        if area != area_selecao:
+            plot_egograma(fig2, df_colaborador_egograma.index, area_selecionada_egograma, f'Área {area}')
+
+        if contrato != contrato_selecao:
+            plot_egograma(fig2, df_colaborador_egograma.index, contrato_selecionado_egograma, f'Contrato {contrato}')
+
+        fig2.update_traces(
+            marker=dict(
+                line=dict(
+                    width=1,
+                    color='DarkSlateGrey')),
+            selector=dict(mode='markers'),
+            margin=dict(l=20, r=20, t=20, b=20),
         )
-        fig.layout['template']['data']['table'][0]['header']['fill']['color'] = 'rgba(0,0,0,0)'
-        st.plotly_chart(fig)
+        st.plotly_chart(fig2, use_container_width=True)
+
+    # Mapeamento
+    st.markdown("### Mapeamento")
+    fig3 = go.Figure()
+
+    df_mapeamento = df[(df['colaborador'] == colaborador)][mapeamento_vars].T
+    df_mapeamento.columns = ['valor']
+    df_mapeamento.index = mapeamento_escalas
+    df_mapeamento = df_mapeamento.replace(mapeamento_desempenho)
+
+    plot_egograma(fig3, df_mapeamento.index, df_mapeamento['valor'], 'Colaborador')
+
+    fig3.update_traces(marker=dict(line=dict(width=1,
+                                             color='DarkSlateGrey')),
+                       selector=dict(mode='markers'),
+                       )
+    fig3.update_xaxes(title_text='Zonas de Performance', tickangle=-60, side='top')
+    fig3.update_yaxes(title_text='Área de Desempenho')
+    fig3.update_layout(
+        margin=dict(l=20, r=20, t=20, b=20),
+        xaxis_tickfont_size=16,
+        yaxis_tickfont_size=16,
+        yaxis_titlefont_size=16,
+    )
+    st.plotly_chart(fig3, use_container_width=True)
 
     # Mapeamento Liderança Dimensões
     st.markdown("### Mapeamento Liderança")
@@ -364,7 +362,6 @@ def main():
         fig4.update_layout(
             title=df_title,
             width=550,
-            margin=dict(l=0, r=0, t=0, b=0),
             yaxis_tickfont_size=16,
             xaxis_tickfont_size=16,
         )
@@ -384,7 +381,6 @@ def main():
         fig5.update_layout(
             title=df_title,
             width=550,
-            margin=dict(l=0, r=0, t=0, b=0),
             yaxis_tickfont_size=16,
             xaxis_tickfont_size=16,
         )
@@ -402,7 +398,6 @@ def main():
         fig6.update_layout(
             title=df_title,
             width=500,
-            margin=dict(l=0, r=0, t=0, b=0),
             yaxis_tickfont_size=16,
             xaxis_tickfont_size=16,
         )
@@ -435,17 +430,15 @@ def main():
             ticktext=color_legend.SIGNIFICADO.values,
             type='category',
             categoryorder='array',
-            # range=[0, len(color_legend)],
             categoryarray=color_legend.index[::-1].values,
         ),
-        width=1700,
-        height=600,
-        margin=dict(l=0, r=0, t=0, b=0),
+        margin=dict(l=20, r=20, t=20, b=20),
         xaxis_tickfont_size=16,
         yaxis_tickfont_size=16,
+        # paper_bgcolor="LightSteelBlue",
     )
     # fig.update_xaxes(tickangle=-45, side='top')
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 
 if __name__ == '__main__':

@@ -4,13 +4,14 @@ import streamlit as st
 import plotly.graph_objects as go
 
 
-def plot_cameron_quinn(fig1, r, theta, name):
+def plot_cameron_quinn(fig1, r, theta, name, visible):
     try:
         fig1.add_trace(go.Scatterpolar(
             r=r,
             theta=theta,
             fill='tonext',
-            name=name
+            name=name,
+            visible=visible
         ))
     except:
         pass
@@ -156,17 +157,17 @@ def main():
 
         fig1 = go.Figure()
 
-        plot_cameron_quinn(fig1, geral_atual, categorias, 'Spassu - Atual')
-        plot_cameron_quinn(fig1, geral_ideal, categorias, 'Spassu - Ideal')
+        plot_cameron_quinn(fig1, geral_atual, categorias, 'Spassu - Atual', visible=None)
+        plot_cameron_quinn(fig1, geral_ideal, categorias, 'Spassu - Ideal', visible='legendonly')
 
-        plot_cameron_quinn(fig1, colaborador_atual, categorias, 'Colaborador - Atual')
-        plot_cameron_quinn(fig1, colaborador_ideal, categorias, 'Colaborador - Ideal')
+        plot_cameron_quinn(fig1, colaborador_atual, categorias, 'Colaborador - Atual', visible=None)
+        plot_cameron_quinn(fig1, colaborador_ideal, categorias, 'Colaborador - Ideal', visible='legendonly')
 
-        plot_cameron_quinn(fig1, contrato_atual, categorias, f'Contrato ({contrato_selecao}) - Atual')
-        plot_cameron_quinn(fig1, contrato_ideal, categorias, f'Contrato ({contrato_selecao}) - Ideal')
+        plot_cameron_quinn(fig1, contrato_atual, categorias, f'Contrato ({contrato_selecao}) - Atual', visible=None)
+        plot_cameron_quinn(fig1, contrato_ideal, categorias, f'Contrato ({contrato_selecao}) - Ideal', visible='legendonly')
 
-        plot_cameron_quinn(fig1, area_atual, categorias, f'Área ({area_selecao}) - Atual')
-        plot_cameron_quinn(fig1, area_ideal, categorias, f'Área ({area_selecao}) - Ideal')
+        plot_cameron_quinn(fig1, area_atual, categorias, f'Área ({area_selecao}) - Atual', visible=None)
+        plot_cameron_quinn(fig1, area_ideal, categorias, f'Área ({area_selecao}) - Ideal', visible='legendonly')
 
         fig1.update_layout(
             polar=dict(

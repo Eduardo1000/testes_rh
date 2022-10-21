@@ -437,7 +437,7 @@ def main():
         yaxis_tickfont_size=16,
         # paper_bgcolor="LightSteelBlue",
     )
-    # fig.update_xaxes(tickangle=-45, side='top')
+    fig.update_xaxes(tickangle=-90, side='bottom')
     st.plotly_chart(fig, use_container_width=True)
 
 

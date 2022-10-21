@@ -361,11 +361,11 @@ def main():
 
         fig4.update_layout(
             title=df_title,
-            width=550,
+            margin=dict(l=20, r=0, t=30, b=20),
             yaxis_tickfont_size=16,
             xaxis_tickfont_size=16,
         )
-        st.plotly_chart(fig4)
+        st.plotly_chart(fig4, use_container_width=True)
 
     with col_2:
         fig5 = go.Figure()
@@ -380,11 +380,11 @@ def main():
 
         fig5.update_layout(
             title=df_title,
-            width=550,
+            margin=dict(l=20, r=0, t=30, b=20),
             yaxis_tickfont_size=16,
             xaxis_tickfont_size=16,
         )
-        st.plotly_chart(fig5)
+        st.plotly_chart(fig5, use_container_width=True)
 
     with col_3:
         fig6 = go.Figure()
@@ -397,11 +397,11 @@ def main():
 
         fig6.update_layout(
             title=df_title,
-            width=500,
+            margin=dict(l=20, r=0, t=30, b=20),
             yaxis_tickfont_size=16,
             xaxis_tickfont_size=16,
         )
-        st.plotly_chart(fig6)
+        st.plotly_chart(fig6, use_container_width=True)
 
     # Mapeamento Liderança Indicadores
     st.markdown("### Dimensões")

@@ -106,9 +106,9 @@ map_lid_dim = {
     "VITA EMOCIONAL": ['BIOFILIA', 'HUMOR', 'AUTOCONFIANÇA', 'AUS DEPRESSÃO', 'AUS ANSIEDADE'],
     "VÍNCULO": ['VINCULO FAMILIAR', 'SOCIOFILIA', 'SOLIDAR COMUN', 'SOLIDAR FRAGILI'],
     "CIVILIDADE": ['AMABILIDADE', 'COOPERAÇÃO', 'FRANQUEZA', 'HAB COMUNICAÇÃO'],
-    'INTERAÇÃO <br>COM AUTORIDADE': ['OBEDIÊNCIA', 'DEPENDE APROVAÇÃO', 'COAÇÃO'],
+    'INTERAÇÃO COM<br>AUTORIDADE': ['OBEDIÊNCIA', 'DEPENDE APROVAÇÃO', 'COAÇÃO'],
     'AFASTAMENTO': ['DESCONFIANÇA', 'IRRITABILIDADE', 'HOSTILIDADE', 'RIVALIDADE'],
-    'COMPOSIÇÃO DE IMAGEM': ['CUMPLICIDADE', 'DISSIMULAÇÃO', 'MANIPULAÇÃO', 'ESPERTEZA']
+    'COMPOSIÇÃO<br>DE IMAGEM': ['CUMPLICIDADE', 'DISSIMULAÇÃO', 'MANIPULAÇÃO', 'ESPERTEZA']
 }
 
 
@@ -314,7 +314,8 @@ def main():
             title=df_title,
             width=550,
             margin=dict(l=0, r=0, t=0, b=0),
-
+            yaxis_tickfont_size=16,
+            xaxis_tickfont_size=16,
         )
         st.plotly_chart(fig4)
 
@@ -333,6 +334,8 @@ def main():
             title=df_title,
             width=550,
             margin=dict(l=0, r=0, t=0, b=0),
+            yaxis_tickfont_size=16,
+            xaxis_tickfont_size=16,
         )
         st.plotly_chart(fig5)
 
@@ -349,6 +352,8 @@ def main():
             title=df_title,
             width=500,
             margin=dict(l=0, r=0, t=0, b=0),
+            yaxis_tickfont_size=16,
+            xaxis_tickfont_size=16,
         )
         st.plotly_chart(fig6)
 
@@ -384,7 +389,9 @@ def main():
         ),
         width=1700,
         height=600,
-        margin=dict(l=0, r=0, t=0, b=0)
+        margin=dict(l=0, r=0, t=0, b=0),
+        xaxis_tickfont_size=16,
+        yaxis_tickfont_size=16,
     )
     # fig.update_xaxes(tickangle=-45, side='top')
     st.plotly_chart(fig)

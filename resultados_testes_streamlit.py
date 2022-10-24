@@ -111,6 +111,11 @@ map_lid_dim = {
     'COMPOSIÇÃO<br>DE IMAGEM': ['CUMPLICIDADE', 'DISSIMULAÇÃO', 'MANIPULAÇÃO', 'ESPERTEZA']
 }
 
+map_ibaco_dim = {
+    "VALORES": ['PC', 'REHP', 'PCI', 'SBE'],
+    "PRÁTICAS": ['PIE', 'PRT', 'PRI']
+}
+
 
 def main():
     st.set_page_config(page_title='Dados Liderança', layout='wide')
@@ -257,9 +262,14 @@ def main():
         df_area_selecionada_ibaco = df.groupby('area')[cols_ibaco].mean()
         area_selecionada_ibaco = df_area_selecionada_ibaco.loc[area].values.flatten()
 
+        select_ibaco_cols = [value for values in map_ibaco_dim.values() for value in values]
+        df_ibaco = df[(df['colaborador'] == colaborador)][select_ibaco_cols].T
+        df_ibaco.columns = ['valor']
+        df_ibaco['class'] = [key for key, values in map_ibaco_dim.items() for value in values]
+        dimensoes_ibaco = df_ibaco.reset_index()[['class', 'index']].T.values
+
         fig_ibaco = go.Figure()
 
-        dimensoes_ibaco = ['PC', 'REHP', 'PCI', 'SBE', 'PIE', 'PRT', 'PRI']
         plot_ibaco(fig_ibaco, dimensoes_ibaco, geral_ibaco, np.around(geral_ibaco, decimals=2), 'Spassu')
         plot_ibaco(fig_ibaco, dimensoes_ibaco, colaborador_ibaco, colaborador_ibaco, 'Colaborador')
         plot_ibaco(fig_ibaco, dimensoes_ibaco, area_ibaco, np.around(area_ibaco, decimals=2), f'Área {area_selecao}')

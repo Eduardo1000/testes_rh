@@ -334,7 +334,7 @@ def main():
                        selector=dict(mode='markers'),
                        )
     fig3.update_xaxes(title_text='Zonas de Performance', tickangle=-60, side='top')
-    fig3.update_yaxes(title_text='Área de Desempenho')
+    fig3.update_yaxes(title_text='Área de Desempenho', categoryorder='array', categoryarray= ['Atenção', 'Vulnerável', 'Proficiente', 'Ótimo'])
     fig3.update_layout(
         margin=dict(l=20, r=20, t=20, b=20),
         xaxis_tickfont_size=16,

@@ -229,9 +229,9 @@ def main():
 
         df_johari = df[(df['colaborador'] == colaborador)][select_cols].fillna(0).values[0]
         fig = go.Figure(data=[go.Table(
-            cells=dict(
-                values=[['<br><br>A (Aberta ou Arena)', '<br><br>O (Oculta ou Fechada)'],
-                        ['<br><br>C (Cega)', '<br><br>D (Desconhecida)']],
+            header=dict(
+                values=[['\n'+'A (Aberta ou Arena)', '\n'+'O (Oculta ou Fechada)'],
+                        ['\n'+'C (Cega)', '\n'+'D (Desconhecida)']],
                 line_color=['black'],
                 fill_color=np.where(np.resize(df_johari, (2, 2)), 'rgb(242, 140, 40)', 'rgb(249, 249, 249)'),
                 align='center', font=dict(color='black', size=12),

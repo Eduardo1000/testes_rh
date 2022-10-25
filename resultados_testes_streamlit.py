@@ -236,10 +236,11 @@ def main():
                 fill_color=np.where(np.resize(df_johari, (2, 2)), 'rgb(242, 140, 40)', 'rgb(249, 249, 249)'),
                 align='center', font=dict(color='black', size=12),
                 font_size=24,
-                height=100
+                height=120
             ))
         ])
         fig.update_layout(
+            height=300,
             margin=dict(l=20, r=20, t=20, b=20),
         )
         fig.layout['template']['data']['table'][0]['header']['fill']['color'] = 'rgba(0,0,0,0)'
@@ -323,8 +324,13 @@ def main():
                 line=dict(
                     width=1,
                     color='DarkSlateGrey')),
-            selector=dict(mode='markers'),
-            margin=dict(l=20, r=20, t=20, b=20),
+            selector=dict(mode='markers')
+        )
+
+        fig2.update_layout(
+            autosize=True,
+            height=300,
+            margin=dict(l=20, r=20, t=20, b=20)
         )
         st.plotly_chart(fig2, use_container_width=True)
 

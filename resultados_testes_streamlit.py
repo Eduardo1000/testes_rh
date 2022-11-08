@@ -367,7 +367,7 @@ def main():
 
     df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
     df_map_lider.columns = ['valor']
-    if df_map_lider.isna().all() is not True:
+    if not df_map_lider.isna().all().all():
         # Define columns
         col_1, col_2, col_3 = st.columns(3)
 
@@ -434,7 +434,7 @@ def main():
     df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
     df_map_lider.columns = ['valor']
 
-    if df_map_lider.isna().all() is not True:
+    if not df_map_lider.isna().all().all():
         color_legend = pd.DataFrame(legend)
         new_header = color_legend.iloc[0]  # grab the first row for the header
         color_legend = color_legend[1:]  # take the data less the header row

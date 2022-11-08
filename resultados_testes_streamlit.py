@@ -365,6 +365,8 @@ def main():
     # Mapeamento Liderança Indicadores
     st.markdown("### Indicadores")
 
+    select_cols = ['LIDERANÇA', 'EQUIPE', 'RELAÇÃO HIERÁRQUICA', 'RESILIÊNCIA - R', 'FOCO EM RESULTADO', 'PROATIVIDADE',
+                   'AÇÃO SOB PRESSÃO', 'NEGOCIAÇÃO', 'RESOLUÇÃO DE CONFLITO', 'INOVAÇÃO']
     df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
     df_map_lider.columns = ['valor']
     if not df_map_lider.isna().all().all():

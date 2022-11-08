@@ -359,105 +359,113 @@ def main():
     )
     st.plotly_chart(fig3, use_container_width=True)
 
-    # Mapeamento Liderança Dimensões
+    # Mapeamento Liderança
     st.markdown("### Mapeamento Liderança")
 
     # Mapeamento Liderança Indicadores
     st.markdown("### Indicadores")
 
-    # Define columns
-    col_1, col_2, col_3 = st.columns(3)
+    df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+    df_map_lider.columns = ['valor']
+    if df_map_lider.isna().all() is not True:
+        # Define columns
+        col_1, col_2, col_3 = st.columns(3)
 
-    with col_1:
-        fig4 = go.Figure()
+        with col_1:
+            fig4 = go.Figure()
 
-        select_cols = ['LIDERANÇA', 'EQUIPE', 'RELAÇÃO HIERÁRQUICA', 'RESILIÊNCIA - R', 'FOCO EM RESULTADO', 'PROATIVIDADE',
-                       'AÇÃO SOB PRESSÃO', 'NEGOCIAÇÃO', 'RESOLUÇÃO DE CONFLITO', 'INOVAÇÃO']
-        df_title = 'MACRO INDICADORES - DIREÇÃO POSITIVA'
-        df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
-        df_map_lider.columns = ['valor']
-        plot_bar(fig4, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'lightgreen')
+            select_cols = ['LIDERANÇA', 'EQUIPE', 'RELAÇÃO HIERÁRQUICA', 'RESILIÊNCIA - R', 'FOCO EM RESULTADO', 'PROATIVIDADE',
+                           'AÇÃO SOB PRESSÃO', 'NEGOCIAÇÃO', 'RESOLUÇÃO DE CONFLITO', 'INOVAÇÃO']
+            df_title = 'MACRO INDICADORES - DIREÇÃO POSITIVA'
+            df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+            df_map_lider.columns = ['valor']
+            plot_bar(fig4, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'lightgreen')
 
-        fig4.update_layout(
-            title=df_title,
-            margin=dict(l=20, r=0, t=30, b=20),
-            yaxis_tickfont_size=16,
-            xaxis_tickfont_size=16,
-        )
-        st.plotly_chart(fig4, use_container_width=True)
+            fig4.update_layout(
+                title=df_title,
+                margin=dict(l=20, r=0, t=30, b=20),
+                yaxis_tickfont_size=16,
+                xaxis_tickfont_size=16,
+            )
+            st.plotly_chart(fig4, use_container_width=True)
 
-    with col_2:
-        fig5 = go.Figure()
+        with col_2:
+            fig5 = go.Figure()
 
-        select_cols = ['AUTONOMIA', 'ASSERTIVIDADE', 'FLEXIBILIDADE', 'COMUNICABILIDADE', 'EMPENHO', 'DISCIPLINA',
-                       'SEGURANÇA',
-                       'AUTENTICIDADE', 'TRANQUILIDADE - T', 'CUIDADO']
-        df_title = 'MICRO INDICADORES - DIREÇÃO POSITIVA'
-        df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
-        df_map_lider.columns = ['valor']
-        plot_bar(fig5, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'lightgreen')
+            select_cols = ['AUTONOMIA', 'ASSERTIVIDADE', 'FLEXIBILIDADE', 'COMUNICABILIDADE', 'EMPENHO', 'DISCIPLINA',
+                           'SEGURANÇA',
+                           'AUTENTICIDADE', 'TRANQUILIDADE - T', 'CUIDADO']
+            df_title = 'MICRO INDICADORES - DIREÇÃO POSITIVA'
+            df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+            df_map_lider.columns = ['valor']
+            plot_bar(fig5, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'lightgreen')
 
-        fig5.update_layout(
-            title=df_title,
-            margin=dict(l=20, r=0, t=30, b=20),
-            yaxis_tickfont_size=16,
-            xaxis_tickfont_size=16,
-        )
-        st.plotly_chart(fig5, use_container_width=True)
+            fig5.update_layout(
+                title=df_title,
+                margin=dict(l=20, r=0, t=30, b=20),
+                yaxis_tickfont_size=16,
+                xaxis_tickfont_size=16,
+            )
+            st.plotly_chart(fig5, use_container_width=True)
 
-    with col_3:
-        fig6 = go.Figure()
+        with col_3:
+            fig6 = go.Figure()
 
-        select_cols = ['PROTELAÇÃO', 'IMEDIATISMO', 'IMPULSIVIDADE - P', 'AGRESSIVIDADE', 'PASSIVIDADE', 'TORMENTO', 'DESÂNIMO']
-        df_title = 'MICRO INDICADORES - DIREÇÃO NEGATIVA'
-        df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
-        df_map_lider.columns = ['valor']
-        plot_bar(fig6, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'purple')
+            select_cols = ['PROTELAÇÃO', 'IMEDIATISMO', 'IMPULSIVIDADE - P', 'AGRESSIVIDADE', 'PASSIVIDADE', 'TORMENTO', 'DESÂNIMO']
+            df_title = 'MICRO INDICADORES - DIREÇÃO NEGATIVA'
+            df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
+            df_map_lider.columns = ['valor']
+            plot_bar(fig6, df_map_lider['valor'], df_map_lider.index, 'Colaborador', 'purple')
 
-        fig6.update_layout(
-            title=df_title,
-            margin=dict(l=20, r=0, t=30, b=20),
-            yaxis_tickfont_size=16,
-            xaxis_tickfont_size=16,
-        )
-        st.plotly_chart(fig6, use_container_width=True)
+            fig6.update_layout(
+                title=df_title,
+                margin=dict(l=20, r=0, t=30, b=20),
+                yaxis_tickfont_size=16,
+                xaxis_tickfont_size=16,
+            )
+            st.plotly_chart(fig6, use_container_width=True)
+    else:
+        st.text("Não há dados para Mapeamento de Liderança")
 
-    # Mapeamento Liderança Indicadores
+    # Mapeamento Liderança Dimensões
     st.markdown("### Dimensões")
 
     select_cols = [value for values in map_lid_dim.values() for value in values]
     df_map_lider = df[(df['colaborador'] == colaborador)][select_cols].T
     df_map_lider.columns = ['valor']
 
-    color_legend = pd.DataFrame(legend)
-    new_header = color_legend.iloc[0]  # grab the first row for the header
-    color_legend = color_legend[1:]  # take the data less the header row
-    color_legend.columns = new_header  # set the header row as the df header
-    color_legend = color_legend.set_index('ABREVIAÇÃO')
+    if df_map_lider.isna().all() is not True:
+        color_legend = pd.DataFrame(legend)
+        new_header = color_legend.iloc[0]  # grab the first row for the header
+        color_legend = color_legend[1:]  # take the data less the header row
+        color_legend.columns = new_header  # set the header row as the df header
+        color_legend = color_legend.set_index('ABREVIAÇÃO')
 
-    df_map_lider['class'] = [key for key, values in map_lid_dim.items() for value in values]
-    df_map_lider['color'] = color_legend.loc[df_map_lider['valor'].values]['color'].values
-    fig = go.Figure(data=[go.Bar(
-        x=df_map_lider.reset_index()[['class', 'index']].T.values,
-        y=df_map_lider.valor,
-        marker_color=df_map_lider.color  # marker color can be a single color value or an iterable
-    )])
-    fig.update_layout(
-        yaxis=dict(
-            tickmode='array',
-            tickvals=color_legend.index.values,
-            ticktext=color_legend.SIGNIFICADO.values,
-            type='category',
-            categoryorder='array',
-            categoryarray=color_legend.index[::-1].values,
-        ),
-        margin=dict(l=20, r=20, t=20, b=20),
-        xaxis_tickfont_size=16,
-        yaxis_tickfont_size=16,
-        # paper_bgcolor="LightSteelBlue",
-    )
-    fig.update_xaxes(tickangle=-90, side='bottom')
-    st.plotly_chart(fig, use_container_width=True)
+        df_map_lider['class'] = [key for key, values in map_lid_dim.items() for value in values]
+        df_map_lider['color'] = color_legend.loc[df_map_lider['valor'].values]['color'].values
+        fig = go.Figure(data=[go.Bar(
+            x=df_map_lider.reset_index()[['class', 'index']].T.values,
+            y=df_map_lider.valor,
+            marker_color=df_map_lider.color  # marker color can be a single color value or an iterable
+        )])
+        fig.update_layout(
+            yaxis=dict(
+                tickmode='array',
+                tickvals=color_legend.index.values,
+                ticktext=color_legend.SIGNIFICADO.values,
+                type='category',
+                categoryorder='array',
+                categoryarray=color_legend.index[::-1].values,
+            ),
+            margin=dict(l=20, r=20, t=20, b=20),
+            xaxis_tickfont_size=16,
+            yaxis_tickfont_size=16,
+            # paper_bgcolor="LightSteelBlue",
+        )
+        fig.update_xaxes(tickangle=-90, side='bottom')
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.text("Não há dados para Mapeamento de Liderança")
 
 
 if __name__ == '__main__':
